@@ -1,0 +1,76 @@
+<app-sidevaar></app-sidevaar>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-header text-black" style="background-color: rgb(231, 231, 231);">
+      Descripción de Parámetros
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Capital</th>
+            <td>{{ data?.capital }}</td>
+          </tr>
+          <tr>
+            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Tasa de Interés</th>
+            <td>{{ data?.tasaInteres }}</td>
+          </tr>
+          <tr>
+            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Tipo de Tasa</th>
+            <td>{{ data?.tipoTasaInteres }}</td>
+          </tr>
+          <tr>
+            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Plazo</th>
+            <td>{{ data?.plazo }} meses</td>
+          </tr>
+          <tr>
+            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Periodo de Gracia</th>
+            <td>{{ data?.periodoGracia }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="mb-4"></div>
+
+<table class="table table-bordered mx-2">
+  <thead class="table-primary">
+    <tr>
+      <th>Mes</th>
+      <th>Saldo Deuda</th>
+      <th>Intereses</th>
+      <th>Amortización</th>
+      <th>Cuota Capital</th>
+      <th>Cuota Mensual</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let pago of data?.resultados">
+      <td>{{ pago.mes }}</td>
+      <td>{{ pago.saldoDeuda }}</td>
+      <td>{{ pago.intereses }}</td>
+      <td>{{ pago.amortizacionCapital }}</td>
+      <td>{{ pago.cuotaCapital }}</td>
+      <td>{{ pago.cuotaMensual }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="container">
+  <div class="card mt-4 mb-4">
+    <div class="card-body">
+      <p class="mx-2">Total pagado: {{ data.totalPagado }}</p>
+      <p class="mx-2">VAN: {{ data.van }}</p>
+      <p class="mx-2">TIR: {{ data.tir }}</p>
+      <div class="text-center"> <!-- Agregar la clase "text-center" para centrar el botón -->
+        <button class="btn btn-danger" (click)="deletePlan()" >Eliminar</button>
+        <button class="btn btn-success custom-button" (click)="exportTable()">Exportar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

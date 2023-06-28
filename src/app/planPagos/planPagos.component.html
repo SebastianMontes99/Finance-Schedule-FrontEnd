@@ -1,0 +1,129 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div  style="background-color: rgba(145, 145, 145, 0.11); height: 100%;" >
+<app-sidevaar></app-sidevaar>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-sm-10 mx-auto">
+      <div class="card">
+        <div class="card-body" style="background-color: rgba(162, 199, 163, 0.555);">
+          <h4 class="card-title">Plan de Pagos</h4>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="capital">Capital:</label>
+                <div class="tooltip-wrapper">
+                  <input type="number" id="capital" class="form-control" [(ngModel)]="capital" placeholder="Ingresa el Capital">
+                  <div class="tooltip-content">
+                    <span class="tooltip-text">El capital en un préstamo es el dinero que te prestamos o que debes devolver. Es la cantidad principal que solicitas y que acuerdas pagar en un período de tiempo determinado. No incluye los intereses ni otros cargos adicionales. Es el monto original que debes pagar y sobre el cual se calculan los pagos y la amortización del préstamo.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="tasaInteres">Tasa de interés (%):</label>
+                <input type="number" id="tasaInteres" class="form-control" [(ngModel)]="tasaInteres" placeholder="Ingresa la Tasa Interes" max="100" (change)="validarTasaInteres()">
+                <div *ngIf="mostrarErrorTasaInteres" class="text-danger">La tasa de interés debe ser menor de 100 y mayor que 0.</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="plazo">Plazo (en meses):</label>
+                <input type="number" id="plazo" class="form-control" [(ngModel)]="plazo" placeholder="Ingresa el Plazo del Prestamo" max="300" (change)="validarPlazo()">
+                <div *ngIf="mostrarErrorPlazo" class="text-danger">El plazo debe ser mayor a 6 meses y menor a 300 meses.</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="periodoGracia">Periodo de gracia (en meses):</label>
+                <input type="number" id="periodoGracia" class="form-control" [(ngModel)]="periodoGracia" placeholder="Ingresa el Periodo de Gracia"  max="6" (change)="validarPeriodoGracia()">
+                <div *ngIf="mostrarErrorPeriodoGracia" class="text-danger">El Periodo de Gracia debe ser menor o igual a 6.</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="tipoPlazoGracia">Tipo de Plazo Gracia:</label>
+                <select id="tipoPlazoGracia" class="form-control" [(ngModel)]="tipoPlazoGracia">
+                  <option value="" disabled selected>Seleccione una Tipo de Plazo Gracia</option>
+                  <option value="parcial">Parcial</option>
+                  <option value="total">Total</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="moneda">Moneda:</label>
+                <select id="moneda" class="form-control" [(ngModel)]="moneda">
+                  <option value="" disabled selected>Seleccione el Tipo de Moneda</option>
+                  <option value="1">Soles</option>
+                  <option value="2">Dólares</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="tipoTasaInteres">Tipo de tasa de interés:</label>
+                <select id="tipoTasaInteres" class="form-control" [(ngModel)]="tipoTasaInteres">
+                  <option value="" disabled selected>Seleccione un Tipo de Tasa</option>
+                  <option value="nominal">Nominal</option>
+                  <option value="efectiva">Efectiva</option>
+                </select>
+              </div>
+            </div>
+            <div class="col text-center my-4">
+              <div class="form-group">
+                <button class="btn btn-primary custom-button" (click)="calcularPlanDePagos()">Calcular</button>
+                <button class="btn btn-success custom-button" (click)="exportTable()">Exportar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="resultado">
+  <table class="table table-bordered mx-2">
+    <thead class="table-primary">
+      <tr>
+        <th>Mes</th>
+        <th>Tipo de Plazo</th>
+        <th>Saldo Deuda</th>
+        <th>Intereses</th>
+        <th>Amortización</th>
+        <th>Cuota Capital</th>
+        <th>Cuota Mensual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pago of resultado.resultados">
+        <td>{{ pago.mes }}</td>
+        <td>{{pago.tipoPlazoGracia}}</td>
+        <td>{{ pago.saldoDeuda }}</td>
+        <td>{{ pago.intereses }}</td>
+        <td>{{ pago.amortizacionCapital }}</td>
+        <td>{{ pago.cuotaCapital }}</td>
+        <td>{{ pago.cuotaMensual }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="container">
+    <div class="card mt-4 mb-4">
+      <div class="card-body">
+        <p class="mx-2">Total pagado: {{ resultado.totalPagado }} {{ resultado.tipoMoneda }}</p>
+        <p class="mx-2">VAN: {{ resultado.VAN }}</p>
+        <p class="mx-2">TIR: {{ resultado.TIR }}</p>
+        <button class="btn btn-primary custom-button" (click)="guardarDatos()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

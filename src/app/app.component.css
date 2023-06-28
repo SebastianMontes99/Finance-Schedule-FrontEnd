@@ -1,0 +1,16 @@
+mat-sidenav-container {
+  /*height: calc(205vh - 115vh);*/
+  height: calc(100vh);
+  /*border: 1px solid red;*/
+}
+
+mat-sidenav {
+  width: 200px;
+  background-color: rgb(255, 255, 255);
+}
+.custom-color {
+  background-color: #8170b6; /* Rojo */
+}
+.custom-color2 {
+  background-color: #b5aecc; /* Rojo */
+}

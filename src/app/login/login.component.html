@@ -1,0 +1,50 @@
+<section class="vh-100 bg-transparent" style="background-image:url('https://www.inmoserver.com/fotos/1024/wm/311_o_1ggnilnni149vaam1lacodokdcs.jpg')">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <div class="card border-0 rounded-0">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp" alt="login form" class="img-fluid rounded-left" />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+
+                <form [formGroup]="form" (ngSubmit)="submit()">
+
+                  <div class="text-center mb-4">
+                    <i class="fas fa-cubes fa-3x" style="color: #ff6219;"></i>
+                    <img  src="https://www.mivivienda.com.pe/PortalCMS/archivos/documentos/FMV%20LOGO-3203.PNG" alt="Finance" width="300"/>
+                  </div>
+
+                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="username" formControlName="username" placeholder="Ingrese el nombre de usuario" required class="form-control form-control-lg" />
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password" formControlName="password" placeholder="Ingrese contraseña" required class="form-control form-control-lg" />
+                  </div>
+
+                  <div class="d-flex justify-content-center">
+                    <div class="pt-1 mb-4">
+                      <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0" style="color: #393f81;">Don't have an account? <a href="#!" style="color: #393f81;" routerLink="/register">Register here</a></p>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

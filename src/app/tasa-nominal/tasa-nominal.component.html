@@ -1,0 +1,30 @@
+<app-sidevaar></app-sidevaar>
+<div class="container">
+  <Form>
+<div>
+  <label>Tasa de interés original:</label>
+  <input type="number" [(ngModel)]="tasaOriginal">
+</div>
+<div>
+  <label>Tiempo de la tasa original:</label>
+  <input type="number" [(ngModel)]="tiempoOriginal">
+  <select [(ngModel)]="unidadTiempoOriginal">
+    <option value="anos">Años</option>
+    <option value="meses">Meses</option>
+    <option value="dias">Días</option>
+  </select>
+</div>
+<div>
+  <label>Tiempo para la nueva tasa:</label>
+  <input type="number" [(ngModel)]="tiempoNuevo">
+  <select [(ngModel)]="unidadTiempoNuevo">
+    <option value="anos">Años</option>
+    <option value="meses">Meses</option>
+    <option value="dias">Días</option>
+  </select>
+</div>
+<button (click)="convertir()" type="button">Convertir</button>
+<div *ngIf="tasaNueva">La nueva tasa de interés es {{tasaNueva}}%</div>
+</Form>
+</div>
+

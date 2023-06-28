@@ -1,0 +1,44 @@
+<div  style="background-color: rgba(145, 145, 145, 0.11); height: 100%;" >
+<app-sidevaar></app-sidevaar>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <div *ngFor="let item of data">
+    <div class="container">
+      <div class="card mt-4">
+        <div class="card-header text-black" style="background-color: rgb(231, 231, 231);">
+          Descripción de Parámetros del Plan N°{{item.id}}
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Capital</th>
+                <td>{{ item.capital }}</td>
+              </tr>
+              <tr>
+                <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Tasa de Interés</th>
+                <td>{{ item.tasaInteres }}</td>
+              </tr>
+              <tr>
+                <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Tipo de Tasa</th>
+                <td>{{ item.tipoTasaInteres }}</td>
+              </tr>
+              <tr>
+                <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Plazo</th>
+                <td>{{ item.plazo }} meses</td>
+              </tr>
+              <tr>
+                <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Periodo de Gracia</th>
+                <td>{{ item.periodoGracia }} meses</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center"> <!-- Agregar la clase "text-center" para centrar el botón -->
+            <button class="btn btn-primary" [routerLink]="['/planes-details',item.id]">Ver Detalles</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

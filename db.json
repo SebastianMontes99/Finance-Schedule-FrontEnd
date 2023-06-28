@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "username": "smontes",
+      "password": "Sakurasou9#",
+      "email": "samm85299@gmail.com",
+      "id": 3
+    },
+    {
+      "username": "aaron",
+      "password": "1234",
+      "email": "sebastian",
+      "id": 9
+    },
+    {
+      "username": "Karlix",
+      "password": "1234",
+      "email": "karlix@gmail.com",
+      "id": 10
+    },
+    {
+      "username": "lucas",
+      "password": "1234",
+      "email": "sebastian",
+      "id": 11
+    },
+    {
+      "username": "david",
+      "password": "1234",
+      "email": "sebastian",
+      "id": 12
+    }
+  ],
+  "money": [
+    {
+      "name": "SOL",
+      "description": "sol peruano",
+      "id": 3
+    },
+    {
+      "name": "DOLLAR",
+      "description": "Dollar estadounidense",
+      "id": 3
+    }
+  ]
+}
