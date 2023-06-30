@@ -1,4 +1,23 @@
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(108, 185, 128, 0.699);">
+<!-- Incluye Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Reglas de estilo personalizadas -->
+<style>
+    .navbar {
+        background-color: rgba(70, 130, 180, 0.7);
+    }
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.7) !important; /* Establece el color de los enlaces a blanco con una opacidad del 70% */
+    }
+
+    .nav-link:hover {
+        color: rgba(255, 255, 255, 1) !important; /* Cambia el color a blanco completo cuando se pasa el mouse por encima */
+    }
+</style>
+
+<!-- Código HTML de la barra de navegación -->
+<nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
   <a class="navbar-brand">
     <img src="https://www.mivivienda.com.pe/PortalCMS/archivos/documentos/FMV%20LOGO-3203.PNG" alt="Logo" class="img-fluid" style="max-height: 40px;" />
@@ -17,6 +36,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/misPlanes">Mis Planes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/tasaNominal">Calculo de Tasas</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/login" (click)="logout()">Log Out</a>

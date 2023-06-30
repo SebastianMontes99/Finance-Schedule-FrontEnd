@@ -10,12 +10,20 @@
       <table class="table table-bordered">
         <tbody>
           <tr>
-            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Capital</th>
-            <td>{{ data?.capital }}</td>
+            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Valor Inmueble</th>
+            <td> {{ data?.capital }}</td>
+          </tr>
+          <tr>
+            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Porcentaje Prestamo</th>
+            <td>{{ data?.prestamo }} %</td>
           </tr>
           <tr>
             <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Tasa de Interés</th>
             <td>{{ data?.tasaInteres }}</td>
+          </tr>
+          <tr>
+            <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Tipo de Plazo Gracia</th>
+            <td>{{ data?.tipoPlazoGracia }}</td>
           </tr>
           <tr>
             <th scope="row" style="background-color:rgba(226, 226, 226, 0.432)">Tipo de Tasa</th>
@@ -36,36 +44,38 @@
 </div>
 
 <div class="mb-4"></div>
-
-<table class="table table-bordered mx-2">
+<div class="table-responsive">
+<table  class="table table-bordered table-striped mx-2 text-center">
   <thead class="table-primary">
     <tr>
       <th>Mes</th>
-      <th>Saldo Deuda</th>
+      <th>Tipo de Plazo</th>
+      <th>Saldo Inicial</th>
       <th>Intereses</th>
       <th>Amortización</th>
-      <th>Cuota Capital</th>
-      <th>Cuota Mensual</th>
+      <th>Cuota</th>
+      <th>Saldo Final</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let pago of data?.resultados">
       <td>{{ pago.mes }}</td>
-      <td>{{ pago.saldoDeuda }}</td>
-      <td>{{ pago.intereses }}</td>
-      <td>{{ pago.amortizacionCapital }}</td>
-      <td>{{ pago.cuotaCapital }}</td>
-      <td>{{ pago.cuotaMensual }}</td>
+      <td>{{ pago.tipoPlazoGracia }}</td>
+      <td>{{ pago.saldoInicial| number:'1.2-7'  }}</td>
+      <td>{{ pago.intereses| number:'1.2-7'  }}</td>
+      <td>{{ pago.amortizacionCapital | number:'1.2-2'}}</td>
+      <td>{{ pago.cuotaMensual | number:'1.2-2'}}</td>
+      <td>{{ pago.saldoDeuda| number:'1.2-2' }}</td>
     </tr>
   </tbody>
 </table>
-
+</div>
 <div class="container">
   <div class="card mt-4 mb-4">
     <div class="card-body">
-      <p class="mx-2">Total pagado: {{ data.totalPagado }}</p>
-      <p class="mx-2">VAN: {{ data.van }}</p>
-      <p class="mx-2">TIR: {{ data.tir }}</p>
+      <p class="mx-2">Total pagado: {{ data?.totalPagado }}</p>
+      <p class="mx-2">VAN: {{ data?.van }}</p>
+      <p class="mx-2">TIR: {{ data?.tir }}</p>
       <div class="text-center"> <!-- Agregar la clase "text-center" para centrar el botón -->
         <button class="btn btn-danger" (click)="deletePlan()" >Eliminar</button>
         <button class="btn btn-success custom-button" (click)="exportTable()">Exportar</button>

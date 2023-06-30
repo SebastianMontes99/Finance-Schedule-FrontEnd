@@ -6,26 +6,26 @@ import { Injectable } from '@angular/core';
 export class PlanPagosService {
   calcularPlanPagos(
     capital: number,
+    prestamo: number,
     tasaInteres: number,
     plazo: number,
     periodoGracia: number,
     tipoPlazoGracia: string,
     moneda: string,
-    tipoTasaInteres: string
+    tipoTasaInteres: string,
+    COK:number
   ): any {
     const resultados: any[] = [];
-
+    capital=capital-(capital*(prestamo/100));
     let saldoDeuda = capital;
+    let saldoInicial=saldoDeuda
     let totalIntereses = 0;
     let totalPagado = 0;
-    let tipoMoneda = moneda === '1' ? 'soles' : 'dolares';
-    let VAN = 0;
+    let tipoMoneda = moneda === '1' ? 'S/. ' : '$ ';
 
     const tasaMensual = this.calcularTasaMensual(tasaInteres, tipoTasaInteres);
-    const cuotaMensual = this.calcularCuotaMensual(capital, tasaMensual, plazo);
+    const cuotaMensual = this.calcularCuotaMensual(capital, tasaMensual, plazo,periodoGracia,tipoPlazoGracia);
 
-    // Variable para controlar si se ha alcanzado el primer mes
-    let primerMesAlcanzado = false;
 
     for (let mes = 1; mes <= plazo; mes++) {
       let intereses = 0;
@@ -35,35 +35,40 @@ export class PlanPagosService {
 
       switch (true) {
         case mes <= periodoGracia && tipoPlazoGracia === 'parcial':
+          saldoInicial=saldoDeuda;
           tipoPlazo = 'P';
           intereses = saldoDeuda * tasaMensual;
           totalIntereses += intereses;
           cuotaCapital = 0; // No hay amortización durante el período de gracia parcial
           amortizacionCapital = 0;
+          saldoDeuda = saldoDeuda; // Aquí se añaden los intereses al saldo de la deuda
           break;
         case mes <= periodoGracia && tipoPlazoGracia === 'total':
+          saldoInicial=saldoDeuda;
           tipoPlazo = 'T';
           intereses = saldoDeuda * tasaMensual;
           totalIntereses += intereses;
-          cuotaCapital = 0; // No hay amortización durante el período de gracia total
+          cuotaCapital = 0; // No hay amortización durante el período de gracia parcial
           amortizacionCapital = 0;
+          saldoDeuda +=intereses // Aquí se añaden los intereses al saldo de la deuda
           break;
         default:
+          saldoInicial=saldoDeuda;
           // Cálculo de intereses y cuotaCapital después del período de gracia
           intereses = saldoDeuda * tasaMensual;
           totalIntereses += intereses;
           cuotaCapital = cuotaMensual - intereses;
           amortizacionCapital = cuotaCapital;
+          saldoDeuda = saldoDeuda-(cuotaMensual-intereses);
           break;
       }
-
-      saldoDeuda = saldoDeuda - cuotaCapital;
       totalPagado += cuotaCapital + intereses;
-      VAN += (cuotaCapital + intereses) / Math.pow(1 + tasaMensual, mes);
+
 
       const resultadoMes = {
         mes: mes,
         saldoDeuda: saldoDeuda,
+        saldoInicial:saldoInicial,
         tipoPlazoGracia: tipoPlazo,
         intereses: intereses,
         amortizacionCapital: amortizacionCapital,
@@ -74,7 +79,7 @@ export class PlanPagosService {
 
       resultados.push(resultadoMes);
     }
-
+    const VAN = this.calcularVAN(capital, resultados, tipoTasaInteres, COK); // Calculate VAN
     const TIR = this.calcularTIR(capital, resultados, tipoTasaInteres);
 
     return {
@@ -82,22 +87,28 @@ export class PlanPagosService {
       totalIntereses: totalIntereses,
       totalPagado: totalPagado,
       tipoMoneda: tipoMoneda,
-      VAN: VAN - capital,
+      VAN: VAN,
       TIR: TIR
     };
   }
 
   private calcularTasaMensual(tasaInteres: number, tipoTasaInteres: string): number {
     if (tipoTasaInteres === 'nominal') {
+      return tasaInteres / 1200; // Dividir por 1200 en lugar de 100 para convertir a porcentaje y dividir por 12 para obtener la tasa mensual
+    } else { // Para tasa efectiva
       return Math.pow(1 + tasaInteres / 100, 1 / 12) - 1;
-    } else {
-      return tasaInteres / 100;
     }
+}
+private calcularCuotaMensual(capital: number, tasaMensual: number, plazo: number, periodoGracia: number, tipoPlazoGracia: string): number {
+  let capitalConIntereses = capital;
+
+  // Si el tipo de plazo de gracia es parcial, acumulamos los intereses al capital
+  if (tipoPlazoGracia === 'total') {
+    capitalConIntereses *= Math.pow(1 + tasaMensual, periodoGracia);
   }
 
-  private calcularCuotaMensual(capital: number, tasaMensual: number, plazo: number): number {
-    return capital * (tasaMensual / (1 - Math.pow(1 + tasaMensual, -plazo)));
-  }
+  return capitalConIntereses * (tasaMensual / (1 - Math.pow(1 + tasaMensual, -plazo + periodoGracia)));
+}
 
   private calcularTIR(capital: number, resultados: any[], tipoTasaInteres: string): number {
     const epsilon = 0.000001;
@@ -132,4 +143,23 @@ export class PlanPagosService {
 
     return tasaInteres * 100;
   }
+
+
+private calcularVAN(capital: number, resultados: any[], tipoTasaInteres: string, COK: number): number {
+  let VAN = -capital;
+
+  for (const resultado of resultados) {
+    let tasaPeriodo;
+
+    if (tipoTasaInteres === 'nominal') {
+      tasaPeriodo = Math.pow(1 + resultado.intereses / 100, 1 / 12) - 1;
+    } else {
+      tasaPeriodo = resultado.intereses / 100;
+    }
+
+    VAN += resultado.cuotaMensual / Math.pow(1 + tasaPeriodo, resultado.mes);
+  }
+
+  return VAN - capital * Math.pow(1 + COK / 100, -resultados.length);
+}
 }

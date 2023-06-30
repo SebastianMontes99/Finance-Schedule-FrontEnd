@@ -21,12 +21,14 @@ declare var $: any;
 export class PlanPagosComponent implements OnInit {
 
   capital!: number;
+  prestamo!: number;
   tasaInteres!: number;
   plazo!: number;
   periodoGracia!: number;
   tipoPlazoGracia:string='';
   moneda: string='';
   tipoTasaInteres: string='';
+  COK!:number;
   resultado: any;
   datosEntrada:any;
   mostrarErrorTasaInteres: boolean = false;
@@ -39,12 +41,14 @@ export class PlanPagosComponent implements OnInit {
   calcularPlanDePagos() {
     this.resultado = this.planPagosService.calcularPlanPagos(
       this.capital,
+      this.prestamo,
       this.tasaInteres,
       this.plazo,
       this.periodoGracia,
       this.tipoPlazoGracia,
       this.moneda,
-      this.tipoTasaInteres
+      this.tipoTasaInteres,
+      this.COK
     );
   }
 
@@ -71,7 +75,6 @@ export class PlanPagosComponent implements OnInit {
   }
   validarPlazo() {
     if (this.plazo > 300||this.plazo<6) {
-      this.periodoGracia = 300;
       this.mostrarErrorPlazo = true;
     } else {
       this.mostrarErrorPlazo = false;
@@ -154,8 +157,10 @@ guardarDatos() {
   const username= localStorage.getItem('username');;
   const capital = this.capital;
   const tasaInteres = this.tasaInteres;
+  const prestamo=this.prestamo;
   const plazo = this.plazo;
   const periodoGracia = this.periodoGracia;
+  const tipoPlazoGracia=this.tipoPlazoGracia
   const moneda = this.moneda;
   const tipoTasaInteres = this.tipoTasaInteres;
   const van=this.resultado.VAN
@@ -168,8 +173,10 @@ guardarDatos() {
     username,
     capital,
     tasaInteres,
+    prestamo,
     plazo,
     periodoGracia,
+    tipoPlazoGracia,
     moneda,
     tipoTasaInteres,
     van,
@@ -189,4 +196,13 @@ guardarDatos() {
   );
 }
 
+formatCurrency(amount: number, moneda: string): string {
+  let result: string='';
+  if (moneda === '1') {
+      result = 'S/ ' + amount.toFixed(2);
+  } else if (moneda === '2') {
+      result = '$/ ' + amount.toFixed(2);
+  }
+  return result;
+}
 }
